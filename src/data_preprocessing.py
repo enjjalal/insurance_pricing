@@ -2,6 +2,8 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+import os
+import shutil
 
 def load_and_preprocess_data(file_path):
     """
@@ -32,6 +34,29 @@ def load_and_preprocess_data(file_path):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     return X_train, X_test, y_train, y_test, df
+
+def process_incoming_data():
+    import sys
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    from eda_visualization import perform_eda_and_visualize
+    from model_training import train_and_evaluate_model
+
+    incoming_dir = "data/incoming/"
+    processed_dir = "data/processed/"
+    for filename in os.listdir(incoming_dir):
+        if filename.endswith(".csv"):
+            file_path = os.path.join(incoming_dir, filename)
+            print(f"Processing {file_path}...")
+            X_train, X_test, y_train, y_test, df = load_and_preprocess_data(file_path)
+            if X_train is not None and df is not None:
+                print(f"Processed {filename}: X_train shape {X_train.shape}, y_train shape {y_train.shape}")
+                # Perform EDA and visualization
+                perform_eda_and_visualize(df)
+                # Train and evaluate the model
+                train_and_evaluate_model(X_train, X_test, y_train, y_test)
+            # Move file to processed folder
+            shutil.move(file_path, os.path.join(processed_dir, filename))
+            print(f"Moved {filename} to {processed_dir}")
 
 if __name__ == "__main__":
     # This part is for demonstration and can be removed in a modular setup
@@ -66,6 +91,9 @@ if __name__ == "__main__":
         print("y_train shape:", y_train.shape)
         print("First 5 rows of preprocessed data:")
         print(df.head())
+
+    print("\n--- Automated Pipeline: Processing incoming data files ---")
+    process_incoming_data()
 
 
 
