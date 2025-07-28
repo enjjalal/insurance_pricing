@@ -1,0 +1,12 @@
+# Ignore MLflow experiment tracking artifacts
+mlruns/
+
+# Ignore Python virtual environment
+env_ins/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore data output (optional, keep if you want to version data)
+data/insurance_expanded.csv 
