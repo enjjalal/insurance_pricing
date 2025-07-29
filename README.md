@@ -404,7 +404,7 @@ insurance_pricing/
 ├── mlruns/                     # MLflow experiment logs
 ├── requirements.txt             # Dependencies
 ├── README.md                   # This file
-└── .gitignore                  # Git ignore rules
+└── .gitignore                  # Git ignore rules  
 ```
 
 ---
